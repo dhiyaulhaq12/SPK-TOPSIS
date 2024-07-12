@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Alternatif;
+use Illuminate\Http\Request;
+
+class AlternatifController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $alternatif = Alternatif::orderBy('created_at', 'DESC')->get();
+
+        return view('alternatif.index', compact('alternatif'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('alternatif.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        Alternatif::create($request->all());
+
+        return redirect()->route('alternatif')->with('success', 'Product added succesfully');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+    $alternatif = Alternatif::find($id);
+
+    if (!$alternatif) {
+        return redirect()->route('alternatif')->with('error', 'Alternatif tidak ditemukan.');
+    }
+
+    return view('alternatif.edit', compact('alternatif'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+    $alternatif = Alternatif::find($id);
+
+    if (!$alternatif) {
+        return redirect()->route('alternatif')->with('error', 'Alternatif tidak ditemukan.');
+    }
+
+    $alternatif->update($request->all());
+
+    return redirect()->route('alternatif')->with('success', 'Alternatif berhasil diperbarui.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $alternatif = Alternatif::findOrFail($id);
+        $alternatif->delete();
+
+        return redirect()->route('alternatif')->with('success', 'Alternatif deleted successfully');
+    }
+}
